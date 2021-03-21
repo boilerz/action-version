@@ -84,9 +84,7 @@ describe('gh action', () => {
     const warningSpy = jest.spyOn(core, 'warning');
     await run(runOptions);
 
-    expect(warningSpy).toHaveBeenCalledWith(
-      '🚩 Skipping version (flag false), release and publish',
-    );
+    expect(warningSpy).toHaveBeenCalledWith('🚩 Skipping version (flag false)');
   });
 
   it('should skip if the current branch is not the base branch', async () => {

@@ -44,7 +44,7 @@ export default async function run(
     }
 
     if (core.getInput('version') !== 'true') {
-      core.warning('🚩 Skipping version (flag false), release and publish');
+      core.warning('🚩 Skipping version (flag false)');
       return;
     }
 

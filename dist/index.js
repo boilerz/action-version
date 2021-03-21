@@ -7444,7 +7444,7 @@ function run(options = exports.defaultRunOptions) {
                 return;
             }
             if (core.getInput('version') !== 'true') {
-                core.warning('🚩 Skipping version (flag false), release and publish');
+                core.warning('🚩 Skipping version (flag false)');
                 return;
             }
             const baseBranch = core.getInput('baseBranch');
