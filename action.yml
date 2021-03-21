@@ -1,0 +1,15 @@
+name: 'Package version'
+description: 'Version packages'
+author: '@boilerz'
+inputs:
+  baseBranch:
+    required: false
+    description: 'Base (or Master) branch'
+    default: 'master'
+  version:
+    required: false
+    description: 'Will basically turn off this action'
+    default: 'true'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
