@@ -6,6 +6,8 @@ import { BumpType, Comparison } from '../git-helper';
 import run, { defaultRunOptions } from '../main';
 import { comparison } from './__fixtures/comparison';
 
+jest.mock('@actions/core');
+
 function mockInputs(inputs: Record<string, string>): jest.SpyInstance {
   return jest.spyOn(core, 'getInput').mockImplementation((name) => {
     return inputs[name] || '';
@@ -52,11 +54,20 @@ function mockReturnedValueOf(value: {
 
 describe('gh action', () => {
   const runOptions = { ...defaultRunOptions, githubToken: 'github.token' };
-
+  let originalActor: string;
+  let originalCommits: unknown;
   let versionSpy: jest.SpyInstance;
 
   beforeEach(() => {
     versionSpy = jest.spyOn(gitHelper, 'version').mockResolvedValue(true);
+    originalActor = github.context.actor;
+    originalCommits = github.context.payload.commits;
+    github.context.actor = 'test-actor';
+    github.context.payload.commits = [];
+  });
+  afterEach(() => {
+    github.context.actor = originalActor;
+    github.context.payload.commits = originalCommits;
   });
 
   it('should fail without GITHUB_TOKEN', async () => {
@@ -100,10 +111,8 @@ describe('gh action', () => {
   });
 
   it('should skip if the only one commit is a version commit pushed by the bot', async () => {
-    const originalCommits = github.context.payload.commits;
-    const originalActor = github.context.actor;
     const infoSpy = jest.spyOn(core, 'info');
-    github.context.actor = process.env.GITHUB_USER || 'boilerz-bot';
+    github.context.actor = 'boilerz-bot';
     github.context.payload.commits = [
       {
         message: ':bookmark: v0.0.1',
@@ -115,8 +124,6 @@ describe('gh action', () => {
     expect(infoSpy).toHaveBeenCalledWith(
       expect.stringMatching(/Skipping, version commit pushed by .*/),
     );
-    github.context.payload.commits = originalCommits;
-    github.context.actor = originalActor;
   });
 
   it('should skip if dependencies PRs found open', async () => {
