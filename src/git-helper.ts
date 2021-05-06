@@ -99,6 +99,8 @@ export async function areDiffWorthRelease({
     return false;
   }
 
+  if (!files) return false;
+
   const worthyReleaseFiles = files.filter(
     (file) =>
       !UNWORTHY_RELEASE_FILE_CHECKERS.some(
