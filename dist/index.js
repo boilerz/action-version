@@ -198,6 +198,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -7305,6 +7306,8 @@ function areDiffWorthRelease({ files, commits, }) {
             core.info('👨‍💻 Commits contain only dev dependencies update');
             return false;
         }
+        if (!files)
+            return false;
         const worthyReleaseFiles = files.filter((file) => !UNWORTHY_RELEASE_FILE_CHECKERS.some((fileChecker) => fileChecker.regex.test(file.filename) &&
             (fileChecker.check ? fileChecker.check(file) : true)));
         core.debug(`📄 Updated files: ${files.map((file) => file.filename).join(',')}`);
