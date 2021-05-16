@@ -1,6 +1,6 @@
 {
   "name": "@boilerz/action-version",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "src/main.ts",
   "repository": "git@github.com:boilerz/action-release.git",
   "author": "boilerz",
