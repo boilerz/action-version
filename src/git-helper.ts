@@ -51,7 +51,8 @@ const UNWORTHY_RELEASE_FILE_CHECKERS: FileChecker[] = [
     },
   },
   {
-    regex: /^\.?(github|husky|eslintignore|eslintrc|gitignore|yarnrc|LICENCE|README|tsconfig).*/,
+    regex:
+      /^\.?(github|husky|eslintignore|eslintrc|gitignore|yarnrc|LICENCE|README|tsconfig).*/,
   },
   {
     regex: /.*\.spec\.[j|t]sx?]$/,
