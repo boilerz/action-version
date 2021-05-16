@@ -97,8 +97,9 @@ describe('git-helper', () => {
 
     it('should skip version is branch is behind', async () => {
       execSpy.mockRestore();
-      jest.spyOn(exec, 'exec').mockImplementation(
-        async (command, args, options): Promise<number> => {
+      jest
+        .spyOn(exec, 'exec')
+        .mockImplementation(async (command, args, options): Promise<number> => {
           if (command === 'git' && (args || []).includes('-uno')) {
             const stdout = Buffer.from(
               `Your branch is behind 'origin/master' by 6 commits, and can be fast-forwarded.`,
@@ -107,8 +108,7 @@ describe('git-helper', () => {
             options?.listeners?.stdout?.(stdout);
           }
           return 0;
-        },
-      );
+        });
 
       expect(await version('minor', 'john@doe.co', 'jdoe')).toBe(false);
     });
@@ -209,13 +209,13 @@ describe('git-helper', () => {
         ],
       });
       compareCommitsSpy = jest.fn();
-      jest.spyOn(github, 'getOctokit').mockReturnValue(({
+      jest.spyOn(github, 'getOctokit').mockReturnValue({
         repos: {
           listTags: listTagsSpy,
           listCommits: listCommitsSpy,
           compareCommits: compareCommitsSpy,
         },
-      } as unknown) as InstanceType<typeof GitHub>);
+      } as unknown as InstanceType<typeof GitHub>);
     });
 
     it('should retrieve changes since last release using oldest commit', async () => {
@@ -266,11 +266,11 @@ describe('git-helper', () => {
 
     beforeEach(() => {
       listSpy = jest.fn();
-      jest.spyOn(github, 'getOctokit').mockReturnValue(({
+      jest.spyOn(github, 'getOctokit').mockReturnValue({
         pulls: {
           list: listSpy,
         },
-      } as unknown) as InstanceType<typeof GitHub>);
+      } as unknown as InstanceType<typeof GitHub>);
     });
 
     it('should return true if dependencies PR are open', async () => {
