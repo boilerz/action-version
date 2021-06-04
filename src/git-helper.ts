@@ -126,13 +126,13 @@ export async function retrieveChangesSinceLastRelease(
 ): Promise<Comparison> {
   const { repo, owner } = github.context.repo;
   const octokit = github.getOctokit(githubToken);
-  const { data: tags } = await octokit.repos.listTags({
+  const { data: tags } = await octokit.rest.repos.listTags({
     repo,
     owner,
     per_page: 1,
   });
 
-  const { data: lastCommits } = await octokit.repos.listCommits({
+  const { data: lastCommits } = await octokit.rest.repos.listCommits({
     repo,
     owner,
   });
@@ -144,7 +144,7 @@ export async function retrieveChangesSinceLastRelease(
   core.info(`🏷 Retrieving commits since ${base}`);
   const {
     data: { commits, diff_url, files },
-  } = await octokit.repos.compareCommits({ owner, repo, base, head });
+  } = await octokit.rest.repos.compareCommits({ owner, repo, base, head });
   core.info(`🔗 Diff url : ${diff_url}`);
   return { commits, files };
 }
@@ -155,7 +155,7 @@ export async function hasPendingDependencyPRsOpen(
   const { repo, owner } = github.context.repo;
   const { data: openPRs } = await github
     .getOctokit(githubToken)
-    .pulls.list({ repo, owner, state: 'open' });
+    .rest.pulls.list({ repo, owner, state: 'open' });
 
   return openPRs.some((pr) =>
     pr.labels.some((label) => label.name === PullRequestLabel.DEPENDENCIES),
